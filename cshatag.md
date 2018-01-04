@@ -13,7 +13,7 @@ https://github.com/rfjakob/cshatag
 
 ## check for bitrot in the last log
 
-`grep corrupt cshatag.log`
+`grep -E '^<corrupt>' cshatag.log`
 
 It *has to* be done after *every* `cshatag` run because it reports corrupted files only once and then it fixes the xattr to match the file contents.
 
