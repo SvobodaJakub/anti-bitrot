@@ -6,7 +6,7 @@
 
 ## recursively check PAR2 files in immediate subdirectories for those directories where there is a ".PAR2PROTECT_DPT1" file without logging to a file
 
-find . -type f -name ".PAR2PROTECT_DPT1" -exec bash -c '
+find . -type f -name ".PAR2PROTECT_DPT1" -not -path '*/EXAMPLE-EXCLUDE-PATH/Files/backups-tmp-home/*' -exec bash -c '
     cd "$( dirname "$1" )" && 
     find . -mindepth 1 -maxdepth 1 -type d -exec bash -c '"'"'
         cd "$1" && 
@@ -27,7 +27,7 @@ find . -type f -name ".PAR2PROTECT_DPT1" -exec bash -c '
 
 ## recursively check PAR2 files for those directories where there is a ".PAR2PROTECT_NOR" file without logging to a file
 
-find . -type f -name ".PAR2PROTECT_NOR" -exec bash -c '
+find . -type f -name ".PAR2PROTECT_NOR" -not -path '*/EXAMPLE-EXCLUDE-PATH/Files/backups-tmp-home/*' -exec bash -c '
     cd "$( dirname "$1" )" && 
     [[ -e "PAR2.par2" ]] && 
         { 

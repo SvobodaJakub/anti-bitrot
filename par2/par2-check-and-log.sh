@@ -5,7 +5,7 @@
 
 ## recursively check PAR2 files in immediate subdirectories for those directories where there is a ".PAR2PROTECT_DPT1" file
 
-find . -type f -name ".PAR2PROTECT_DPT1" -exec bash -c '
+find . -type f -name ".PAR2PROTECT_DPT1" -not -path '*/EXAMPLE-EXCLUDE-PATH/Files/backups-tmp-home/*' -exec bash -c '
     echo "$1" ; 
     cd "$( dirname "$1" )" && 
     pwd && 
@@ -24,7 +24,7 @@ find . -type f -name ".PAR2PROTECT_DPT1" -exec bash -c '
 
 ## recursively check PAR2 files for those directories where there is a ".PAR2PROTECT_NOR" file
 
-find . -type f -name ".PAR2PROTECT_NOR" -exec bash -c '
+find . -type f -name ".PAR2PROTECT_NOR" -not -path '*/EXAMPLE-EXCLUDE-PATH/Files/backups-tmp-home/*' -exec bash -c '
     echo "$1" ; 
     cd "$( dirname "$1" )" && 
     pwd && 
@@ -35,5 +35,5 @@ find . -type f -name ".PAR2PROTECT_NOR" -exec bash -c '
 
 ## see whether something needs repair
 
-grep -E 'missing|no data found|damaged|Repair is required' -A2 /tmp/par2verify.log
+grep -E ' - missing| - no data found| - damaged|Repair is required' -A2 /tmp/par2verify.log
 
