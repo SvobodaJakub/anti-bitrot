@@ -49,13 +49,13 @@ find . -type f -name ".PAR2PROTECT_DPT1" -not -path '*/EXAMPLE-EXCLUDE-PATH/File
             if (( _mbytes > 20 && _files < 31 )) ; then
                 _minblocks="2000" ;
             fi ;
-            if (( _kbytes < 1500 )) ; then
+            if (( _mbytes < 2 && _kbytes < 1500 )) ; then
                 _percent="10" ;
             fi ;
-            if (( _kbytes < 150 )) ; then
+            if (( _mbytes < 2 && _kbytes < 150 )) ; then
                 _percent="50" ;
             fi ;
-            if (( _kbytes < 50 )) ; then
+            if (( _mbytes < 2 && _kbytes < 50 )) ; then
                 _percent="100" ;
             fi ;
             par2create -aPAR2 -r"${_percent}" -n1 -b"${_minblocks}" -u -R -- . ||
@@ -109,13 +109,13 @@ find . -type f -name ".PAR2PROTECT_NOR" -not -path '*/EXAMPLE-EXCLUDE-PATH/Files
         if (( _mbytes > 20 && _files < 31 )) ; then
             _minblocks="2000" ;
         fi ;
-        if (( _kbytes < 1500 )) ; then
+        if (( _mbytes < 2 && _kbytes < 1500 )) ; then
             _percent="10" ;
         fi ;
-        if (( _kbytes < 150 )) ; then
+        if (( _mbytes < 2 && _kbytes < 150 )) ; then
             _percent="50" ;
         fi ;
-        if (( _kbytes < 50 )) ; then
+        if (( _mbytes < 2 && _kbytes < 50 )) ; then
             _percent="100" ;
         fi ;
         par2create -aPAR2 -r"${_percent}" -n1 -b"${_minblocks}" -u -- * ||
