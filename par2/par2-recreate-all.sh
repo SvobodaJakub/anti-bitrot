@@ -8,6 +8,15 @@ echo "This is a dangerous operation. Wait 30 seconds if you really want to do th
 echo "(Dangerous because you will lose the PAR2 files that can recover your data. First check that there is nothing you want to recover.)"
 sleep 30
 
+
+# Compatible with versions of these utilities from Fedora.
+command -v par2verify >/dev/null 2>&1 || { echo >&2 "par2cmdline not installed, aborting."; exit 1; }
+command -v par2create >/dev/null 2>&1 || { echo >&2 "par2cmdline not installed, aborting."; exit 1; }
+command -v find >/dev/null 2>&1 || { echo >&2 "find not installed, aborting."; exit 1; }
+command -v du >/dev/null 2>&1 || { echo >&2 "du not installed, aborting."; exit 1; }
+command -v pwd >/dev/null 2>&1 || { echo >&2 "pwd not installed, aborting."; exit 1; }
+command -v awk >/dev/null 2>&1 || { echo >&2 "awk not installed, aborting."; exit 1; }
+
 # setting up a protection system for protecting immediate subdirectories of selected directories
 
 

@@ -25,7 +25,7 @@ find . -type f -name ".PAR2PROTECT_DPT1" -not -path '*/EXAMPLE-EXCLUDE-PATH/File
             par2verify -q PAR2.par2 ; 
         pwd
     '"'"' _ {""} ";" 
-' _ {} ";"  > /tmp/par2verify.log
+' _ {} ";"  > /tmp/par2verify2.log
 
 
 
@@ -40,9 +40,9 @@ find . -type f -name ".PAR2PROTECT_NOR" -not -path '*/EXAMPLE-EXCLUDE-PATH/Files
     [[ -e "PAR2.par2" ]] && 
         par2verify -q PAR2.par2 ; 
     pwd 
-' _ {} ";"  >> /tmp/par2verify.log
+' _ {} ";"  >> /tmp/par2verify2.log
 
 ## see whether something needs repair
 
-grep -E ' - missing| - no data found| - damaged|Repair is required' -A2 /tmp/par2verify.log
+grep -E ' - missing| - no data found| - damaged|Repair is required' -A2 /tmp/par2verify2.log
 

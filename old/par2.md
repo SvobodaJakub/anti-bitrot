@@ -125,3 +125,6 @@ Also, it's interesting to see which parts of the arguments are evaluated by whic
 **More multi-line scripts are in the `par2` directory.**
 
 
+# Windows
+
+Try [QuickPar](https://en.wikipedia.org/wiki/QuickPar) or [MultiPar](https://github.com/Yutaka-Sawada/MultiPar). QuickPar is the original widely-used tool, while MultiPar is a separate newer tool that handles Unicode correctly and identically to par2cmdline.

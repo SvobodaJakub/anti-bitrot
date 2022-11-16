@@ -1,6 +1,15 @@
 #!/bin/bash
 
 
+# Compatible with versions of these utilities from Fedora.
+command -v par2verify >/dev/null 2>&1 || { echo >&2 "par2cmdline not installed, aborting."; exit 1; }
+command -v par2create >/dev/null 2>&1 || { echo >&2 "par2cmdline not installed, aborting."; exit 1; }
+command -v find >/dev/null 2>&1 || { echo >&2 "find not installed, aborting."; exit 1; }
+command -v du >/dev/null 2>&1 || { echo >&2 "du not installed, aborting."; exit 1; }
+command -v pwd >/dev/null 2>&1 || { echo >&2 "pwd not installed, aborting."; exit 1; }
+command -v awk >/dev/null 2>&1 || { echo >&2 "awk not installed, aborting."; exit 1; }
+
+
 # setting up a protection system for protecting immediate subdirectories of selected directories
 
 ## create PAR2 files in immediate subdirectories for those directories where there is a ".PAR2PROTECT_DPT1" file
@@ -13,14 +22,14 @@ find . -type f -name ".PAR2PROTECT_DPT1" -not -path '*/EXAMPLE-EXCLUDE-PATH/File
     echo "$1" ; 
     cd "$( dirname "$1" )" && 
     pwd && 
-    find . -mindepth 1 -maxdepth 1 -type d -exec bash -c '"'"'
+    find . -mindepth 1 -maxdepth 1 -type d -not -name ".git" -exec bash -c '"'"'
         cd "$1" && 
         pwd && 
         if [[ ! -e "PAR2.par2" ]] ; then
             _kbytes="$( du -B 1024 -s . | cut -f1 ; )" ;
             _mbytes="$( du -B 1048576 -s . | cut -f1 ; )" ;
             _files="$( find . -type f | wc -l ; )" ;
-            _percent="3" ;
+            _percent="10" ;
             _minblocks="200" ;
             if [[ "${_kbytes}" == "" ]] ; then
                 _kbytes="300000" ;
@@ -50,16 +59,16 @@ find . -type f -name ".PAR2PROTECT_DPT1" -not -path '*/EXAMPLE-EXCLUDE-PATH/File
                 _minblocks="2000" ;
             fi ;
             if (( _mbytes < 2 && _kbytes < 1500 )) ; then
-                _percent="10" ;
+                _percent="30" ;
             fi ;
             if (( _mbytes < 2 && _kbytes < 150 )) ; then
-                _percent="50" ;
+                _percent="80" ;
             fi ;
             if (( _mbytes < 2 && _kbytes < 50 )) ; then
                 _percent="100" ;
             fi ;
-            par2create -aPAR2 -r"${_percent}" -n1 -b"${_minblocks}" -u -R -- . ||
-            par2create -aPAR2 -r"${_percent}" -n1 -b32767 -u -R -- . ;
+            par2create -aPAR2 -r"${_percent}" -n2 -b"${_minblocks}" -u -R -- . ||
+            par2create -aPAR2 -r"${_percent}" -n2 -b32767 -u -R -- . ;
         fi ;
     '"'"' _ {""} ";" 
 ' _ {} ";" 
@@ -80,7 +89,7 @@ find . -type f -name ".PAR2PROTECT_NOR" -not -path '*/EXAMPLE-EXCLUDE-PATH/Files
         _kbytes="$( find . -maxdepth 1 -type f -print0 | du -s -B 1 --files0-from=- | awk '"'"'{ total += $1} END { printf "%.0f\n", total/1024 }'"'"' ;)" ;
         _mbytes="$( find . -maxdepth 1 -type f -print0 | du -s -B 1 --files0-from=- | awk '"'"'{ total += $1} END { printf "%.0f\n", total/1048576 }'"'"' ;)" ;
         _files="$( find . -maxdepth 1 -type f | wc -l ; )" ;
-        _percent="3" ;
+        _percent="10" ;
         _minblocks="200" ;
         if [[ "${_kbytes}" == "" ]] ; then
             _kbytes="300000" ;
@@ -110,16 +119,16 @@ find . -type f -name ".PAR2PROTECT_NOR" -not -path '*/EXAMPLE-EXCLUDE-PATH/Files
             _minblocks="2000" ;
         fi ;
         if (( _mbytes < 2 && _kbytes < 1500 )) ; then
-            _percent="10" ;
+            _percent="30" ;
         fi ;
         if (( _mbytes < 2 && _kbytes < 150 )) ; then
-            _percent="50" ;
+            _percent="80" ;
         fi ;
         if (( _mbytes < 2 && _kbytes < 50 )) ; then
             _percent="100" ;
         fi ;
-        par2create -aPAR2 -r"${_percent}" -n1 -b"${_minblocks}" -u -- * ||
-        par2create -aPAR2 -r"${_percent}" -n1 -b32767 -u -- * ;
+        par2create -aPAR2 -r"${_percent}" -n2 -b"${_minblocks}" -u -- * ||
+        par2create -aPAR2 -r"${_percent}" -n2 -b32767 -u -- * ;
     fi ;
 ' _ {} ";" 
 
